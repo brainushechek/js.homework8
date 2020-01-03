@@ -108,7 +108,6 @@ function Circle(size, backgroundColor, point, zIndex = 0) {
         sum += +`${point}`
         points.innerHTML = sum 
     }
-
     this.appendToApp = () => circlesContainer.appendChild(element)
 }
 
@@ -167,6 +166,18 @@ window.onmousemove = (event) => {
     img.style.left = `${event.clientX}px`
 }
 
+// var dartInMotion = document.createElement('img')
+// app.appendChild(dartInMotion)
+
+// window.onclick = (event) => {
+//     dartInMotion.src = 'img/drt.gif'
+//     setTimeout (() => {
+//         img.src = 'img/drt.png'
+//     }, 800)
+//     console.log(event)
+// }
+
+
 function Bird(size, imgSrc, intervalTime,zIndex = 5) {
     var element = document.createElement('img')
     element.src = imgSrc
@@ -187,7 +198,7 @@ function Bird(size, imgSrc, intervalTime,zIndex = 5) {
 }
 var birds = []
 var random = (min, max) => Math.round(Math.random() * (max - min) + min)
-for (var i = 0; i < 0; i++) {
+for (var i = 0; i < 3; i++) {
     birds.push(new Bird (random(50, 250), 'img/bird.gif', random(50, 2000)))
 }
 birds.forEach((bird) => bird.appendToApp())
