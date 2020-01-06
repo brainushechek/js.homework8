@@ -1,4 +1,4 @@
-var modal = document.createElement('div') 
+let modal = document.createElement('div') 
 modal.style.cssText = `
     height: 50px;  
     width: 200px; 
@@ -13,7 +13,7 @@ modal.style.cssText = `
 `
 document.body.appendChild(modal)
 
-var startButton = document.createElement('input')
+let startButton = document.createElement('input')
 startButton.type = 'button'
 startButton.value = 'START GAME'
 startButton.style.cssText = `
@@ -24,8 +24,10 @@ startButton.style.cssText = `
 `
 modal.appendChild(startButton)
 
+let sum = 0
+
 function showModalWin() {
-    var darkLayer = document.createElement('div')
+    let darkLayer = document.createElement('div')
     darkLayer.style.cssText = `
         position: fixed;
         width:100%;
@@ -40,32 +42,56 @@ function showModalWin() {
 
     modal.style.display = 'block'
 
-    startButton.addEventListener('click', startGame, false)
-    function startGame() {
-        darkLayer.parentNode.removeChild(darkLayer)
+    startButton.addEventListener('click', function startGame() {
+        darkLayer.style.display = 'none'
         modal.style.display = 'none'
         app.style.display = 'block'
-    }
-    startButton.addEventListener('click', playMusic, false)
-    function playMusic() {
+    }, false)
+    startButton.addEventListener('click', function playMusic() {
         music.play()
-    }
+    }, false)
+    startButton.addEventListener('click', function countPuints() {
+        points.innerText = ''
+        sum = 0
+        setTimeout(() => {
+            showModalWin()
+            let yourPoints = document.createElement('div')
+            yourPoints.style.cssText = `
+                width: 300px;
+                height: 50px;
+                background: white;
+                top: calc(50% - ${50 / 2}px); 
+                left: calc(50% - ${300 / 2}px);
+                font-family: Comic Sans MS, cursive;
+                font-size: 25px; 
+                z-index: 9; 
+                position: fixed;
+                border: 1px solid #383838;
+                text-align: center;  
+        `
+        document.body.appendChild(yourPoints)
+        app.style.display = 'none'
+        yourPoints.innerText = `You scored ${sum} points`
+        setTimeout(() => {
+            yourPoints.style.display = 'none'
+        }, 3000)
+
+        }, 60000)
+    }, false)
 }
 
 showModalWin()
 
-
-var app = document.getElementById('app')
+let app = document.getElementById('app')
 app.style.display = 'none'
 
-var music = document.createElement('audio')
+let music = document.createElement('audio')
 music.src = 'music/music.mp3'
 music.loop = true
 music.volume = 0.2
 app.appendChild(music)
 
-
-var points = document.createElement('div')
+let points = document.createElement('div')
 points.style.cssText = `
     width: 100px;
     height: 50px;
@@ -81,14 +107,12 @@ points.style.cssText = `
 `
 app.appendChild(points)
 
-var audio = document.createElement('audio')
+let audio = document.createElement('audio')
 audio.src = 'music/target.mp3'
 app.appendChild(audio)
 
-var sum = 0
-
 function Circle(size, backgroundColor, point, zIndex = 0) {
-    var element = document.createElement('div')
+    let element = document.createElement('div')
     element.style.cssText = `
         width: ${size}px;
         height: ${size}px;
@@ -111,7 +135,7 @@ function Circle(size, backgroundColor, point, zIndex = 0) {
     this.appendToApp = () => circlesContainer.appendChild(element)
 }
 
-var circlesContainer = document.createElement('div')
+let circlesContainer = document.createElement('div')
 circlesContainer.style.cssText = `
         width: ${500}px;
         height: ${500}px;
@@ -122,7 +146,7 @@ circlesContainer.style.cssText = `
         `
 app.appendChild(circlesContainer)
 
-var circles = [
+let circles = [
     new Circle(396, 'black', 5), 
     new Circle(330, 'white', 10, 1),
     new Circle(264, 'black', 20, 2), 
@@ -132,21 +156,22 @@ var circles = [
 circles.forEach((circle) => circle.appendToApp())
 
 
-function circlesMove() { 
+function circlesMove() {
+    circlesContainer.style.transition = `1s all` 
     setInterval(() => {
         circlesContainer.style.top = `${random (0, 100)}px`
         circlesContainer.style.left = `${random (300, 400)}px`
     }, 500)}
 circlesMove()
 
-var img = document.createElement('img')
+let img = document.createElement('img')
 img.src = 'img/drt.png'
 img.style.zIndex = 10
 img.style.width = '80px'
 img.style.position = 'absolute'
 app.appendChild(img)
 
-var style = document.createElement('style')
+let style = document.createElement('style')
 style.innerText = ` 
 html, body {
     height: 100%;
@@ -161,25 +186,21 @@ body {
 document.head.appendChild(style)
 
 window.onmousemove = (event) => {
-    //console.dir(event)
     img.style.top = `${event.clientY - 80}px`
     img.style.left = `${event.clientX}px`
 }
 
-// var dartInMotion = document.createElement('img')
-// app.appendChild(dartInMotion)
-
-// window.onclick = (event) => {
-//     dartInMotion.src = 'img/drt.gif'
-//     setTimeout (() => {
-//         img.src = 'img/drt.png'
-//     }, 800)
-//     console.log(event)
-// }
+window.onclick = (event) => {
+    img.src = 'img/drt.gif'
+    setTimeout (() => {
+        img.src = 'img/drt.png'
+    }, 800)
+    console.log(event)
+}
 
 
 function Bird(size, imgSrc, intervalTime,zIndex = 5) {
-    var element = document.createElement('img')
+    let element = document.createElement('img')
     element.src = imgSrc
     element.style.cssText = `
         position: absolute;
@@ -187,7 +208,7 @@ function Bird(size, imgSrc, intervalTime,zIndex = 5) {
         z-Index: ${zIndex};
         transition: ${intervalTime / 1000}s all
         `
-    var random = (min, max) => Math.round(Math.random() * (max - min) + min)
+    let random = (min, max) => Math.round(Math.random() * (max - min) + min)
     this.appendToApp = () => app.appendChild(element)
     this.startInterval = () => {
         setInterval(() => {
@@ -196,9 +217,9 @@ function Bird(size, imgSrc, intervalTime,zIndex = 5) {
         }, intervalTime)
     }
 }
-var birds = []
+let birds = []
 var random = (min, max) => Math.round(Math.random() * (max - min) + min)
-for (var i = 0; i < 3; i++) {
+for (let i = 0; i < 3; i++) {
     birds.push(new Bird (random(50, 250), 'img/bird.gif', random(50, 2000)))
 }
 birds.forEach((bird) => bird.appendToApp())
